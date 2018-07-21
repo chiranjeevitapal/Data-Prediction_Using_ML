@@ -1,3 +1,8 @@
+#####################################
+AUTHOR: Chiranjeevi Tapal
+EMAIL: chiranjeevi.tapal@outlook.com
+#####################################
+
 # Real-Time-Data-Predictions
 Real Time Data Predictions: A machine learning model
 
