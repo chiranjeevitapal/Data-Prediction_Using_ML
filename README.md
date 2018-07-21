@@ -1,7 +1,8 @@
-# Real-Estate-Predictions
-Real Estate Predictions: A machine learning model
+# Real-Time-Data-Predictions
+Real Time Data Predictions: A machine learning model
 
 This is a simple machine learning model I made which predicts the prices of real estate based on certain parametres such as number of bedrooms, plot size and other key factors affecting the prices of houses.
+This can be further enhanced to enhance any other metrics.
 It makes use of the random forest model to predict prices. I have included the datasets which are needed to train the model and validate it later.
 
 File description:
@@ -12,10 +13,8 @@ File description:
 
 3. test.csv - dataset to test the model and predict the prices
 
-4. main.py - the python program file 
+4. trainer.py - the python program file that trains with the training data. Result model is persisted using joblib pickle. 
+
+5. tester.py - the python program file that tests the program. It loads the joblib pickle that is created by trainier for testing.
 
 Data sources - www.kaggle.com
-
-I also entered this model in a competition on Kaggle through my Kaggle profile @mehtavishwa30
-Check out the whole kernel by visiting the link below:
-https://www.kaggle.com/mehtavishwa30/real-estate-predictions
