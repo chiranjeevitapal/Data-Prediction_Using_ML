@@ -8,18 +8,22 @@ predict_cols = ['SUBDIVISION', 'YEAR', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
 
 train_file_path = 'data/rainfall_in_india_1901-2015_train_data.csv'  # store file path
 train = pd.read_csv(train_file_path)  # read the training data
-print(train.describe())  # print data
-print(train.columns)  # print name of columns
+# print(train.describe())  # print data
+# print(train.columns)  # print name of columns
 
 # Create a label (category) encoder object
-le = preprocessing.LabelEncoder()
-train['SUBDIVISION'] = le.fit_transform(train['SUBDIVISION'])
+# le = preprocessing.LabelEncoder()
+# train['SUBDIVISION'] = le.fit_transform(train['SUBDIVISION'])
 
 y = train.ANNUAL  # set single column salePrice as target column
 
 train_X = train[predict_cols]  # set list of columns predic_cols as predictors
+# train_X = pd.get_dummies(train_X)
+pd.get_dummies(train_X['SUBDIVISION'], prefix=['SUBDIVISION'])
+train_X = pd.concat([train_X, pd.get_dummies(train_X['SUBDIVISION'], prefix='SUBDIVISION')], axis=1)
+train_X.drop(['SUBDIVISION'], axis=1, inplace=True)
 
-print(train_X)
+print(train_X.columns)
 
 forest_model = RandomForestRegressor()  # create random forest model
 forest_model.fit(train_X, y)  # train the model using predictors and target values
