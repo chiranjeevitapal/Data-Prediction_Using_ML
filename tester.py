@@ -13,6 +13,11 @@ df_actual = df_actual.append(df_dummy)
 print('data after append')
 print(df_actual)
 
+# Fill empty cells
+df_actual['Positive_Feedback'].fillna(False, inplace=True)
+df_actual['Negative_Feedback'].fillna(False, inplace=True)
+df_actual.fillna(0, inplace=True)
+
 predict_cols = ['Complexity', 'Time_Difference', 'Designation', 'Positive_Feedback', 'Negative_Feedback']
 
 # Treat the test data in the same way as training data. In this case, pull same columns.
@@ -32,7 +37,7 @@ print(predict_vals)
 test_X['PREDS'] = predict_vals
 
 # Create a new df with the merged columns
-#df_merge = pd.merge(df_actual, test_X[['PREDS']], how='inner', left_index=True, right_index=True)
+# df_merge = pd.merge(df_actual, test_X[['PREDS']], how='inner', left_index=True, right_index=True)
 
 df_merge = pd.merge(df_actual.assign(key=df_actual.groupby(level=0).cumcount()).reset_index(),
                     test_X.assign(key=test_X.groupby(level=0).cumcount()).reset_index(),
@@ -49,3 +54,6 @@ print(df_out)
 # Calculate average performance of an employee
 merge_df_average_by_state = df_out.groupby('Assignee').mean()
 print(merge_df_average_by_state)
+
+# Save the predictions data to a csv
+merge_df_average_by_state.to_csv('data/prediction_output.csv')

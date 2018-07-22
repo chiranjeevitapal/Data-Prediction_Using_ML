@@ -8,6 +8,15 @@ predict_cols = ['Complexity', 'Time_Difference', 'Designation', 'Positive_Feedba
 train_file_path = 'data/employee_train_data.csv'
 df = pd.read_csv(train_file_path)  # read the training data
 
+# using ffill and bill just in case of data non availablity of data
+# df.fillna(method='ffill', inplace=True)
+# df.fillna(method='bfill', inplace=True)
+
+# Fill empty cells
+df['Positive_Feedback'].fillna(False, inplace=True)
+df['Negative_Feedback'].fillna(False, inplace=True)
+df.fillna(0, inplace=True)
+
 # set single column salePrice as target column
 predict_df = df.Performance_Rating
 
@@ -18,9 +27,7 @@ pd.get_dummies(train_df['Designation'], prefix=['Designation'])
 train_df = pd.concat([train_df, pd.get_dummies(train_df['Designation'], prefix='Designation')], axis=1)
 train_df.drop(['Designation'], axis=1, inplace=True)
 
-print(train_df.columns)
-
-# Create the X and y arrays
+# Create the X and y arrays. X has input columns to predict. y has only the column that needs to be learnt
 X = train_df.values
 y = predict_df.values
 
@@ -30,4 +37,5 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 forest_model = RandomForestRegressor()  # create random forest model
 forest_model.fit(X_train, y_train)  # train the model using predictors and target values
 
+# Dump the model to a pickle file
 joblib.dump(forest_model, 'data/persistence_employee.pkl')
