@@ -1,14 +1,10 @@
 import pandas as pd  # data processing, CSV file I/O
 from sklearn.externals import joblib
-from sklearn import preprocessing
 
 forest_model = joblib.load('data/persistenceweather.pkl')
 test = pd.read_csv('data/rainfall_in_india_test_data.csv')  # Read the test data
 predict_cols = ['SUBDIVISION', 'YEAR', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV',
                 'DEC']
-# Create a label (category) encoder object
-# le = preprocessing.LabelEncoder()
-# test['SUBDIVISION'] = le.fit_transform(test['SUBDIVISION'])
 
 # Treat the test data in the same way as training data. In this case, pull same columns.
 test_X = test[predict_cols]
@@ -28,3 +24,7 @@ df_out = pd.merge(test, test_X[['PREDS']], how='left', left_index=True, right_in
 
 print('Data after predictions')
 print(df_out)
+
+# Calculate average performance of an employee
+merge_df_average_by_state = df_out.groupby('SUBDIVISION').mean()
+print(merge_df_average_by_state)

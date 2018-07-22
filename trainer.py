@@ -1,19 +1,12 @@
 import pandas as pd  # data processing, CSV file I/O
 from sklearn.ensemble import RandomForestRegressor  # library for Random Forest model
 from sklearn.externals import joblib
-from sklearn import preprocessing
 
 predict_cols = ['SUBDIVISION', 'YEAR', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV',
                 'DEC']
 
 train_file_path = 'data/rainfall_in_india_1901-2015_train_data.csv'  # store file path
 train = pd.read_csv(train_file_path)  # read the training data
-# print(train.describe())  # print data
-# print(train.columns)  # print name of columns
-
-# Create a label (category) encoder object
-# le = preprocessing.LabelEncoder()
-# train['SUBDIVISION'] = le.fit_transform(train['SUBDIVISION'])
 
 y = train.ANNUAL  # set single column salePrice as target column
 
