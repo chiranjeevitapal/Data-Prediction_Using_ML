@@ -1,16 +1,17 @@
 import pandas as pd  # data processing, CSV file I/O
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 
 predict_cols = ['Complexity', 'Time_Difference', 'Designation', 'Positive_Feedback', 'Negative_Feedback']
 # read csv file
 train_file_path = 'data/employee_train_data.csv'
 df = pd.read_csv(train_file_path)  # read the training data
-
-# using ffill and bill just in case of data non availablity of data
-# df.fillna(method='ffill', inplace=True)
-# df.fillna(method='bfill', inplace=True)
 
 # Fill empty cells
 df['Positive_Feedback'].fillna(False, inplace=True)
@@ -35,8 +36,23 @@ y = predict_df.values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
 # forest_model = RandomForestRegressor()  # create random forest model
+
+rf = RandomForestRegressor()
 gb = GradientBoostingRegressor(loss='huber', max_depth=6)
-gb.fit(X_train, y_train)  # train the model using predictors and target values
+ada_tree_backing = DecisionTreeRegressor()
+ab = AdaBoostRegressor(ada_tree_backing, learning_rate=1, loss='exponential', n_estimators=3000)
+
+rf_score = cross_val_score(rf, X_train, y_train)
+gb_score = cross_val_score(gb, X_train, y_train)
+ab_score = cross_val_score(ab, X_train, y_train)
+
+# precision = cross_val_score([rf], X, y, cv=10)
+
+print("RF Precision: " + str(round(100 * rf_score.mean(), 2)) + "%")
+print("GB Precision: " + str(round(100 * gb_score.mean(), 2)) + "%")
+print("AB Precision: " + str(round(100 * ab_score.mean(), 2)) + "%")
+
+# ab.fit(X_train, y_train)  # train the model using predictors and target values
 
 # Dump the model to a pickle file
-joblib.dump(gb, 'data/persistence_employee.pkl')
+# joblib.dump(ab, 'data/persistence_employee.pkl')
